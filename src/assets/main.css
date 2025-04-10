@@ -1,0 +1,18 @@
+@font-face {
+  font-family: 'ZabavaFont';
+  src: url(/Zabava_mari_chenak_0.ttf);
+  font-weight: normal;
+  font-style: normal;
+}
+
+* {
+  padding: 0;
+  margin: 0;
+  box-sizing: border-box;
+}
+
+body {
+  font-family: 'ZabavaFont', sans-serif;
+  height: 100vh;
+  overflow: hidden;
+}
