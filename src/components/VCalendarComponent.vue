@@ -1,8 +1,12 @@
 <script setup lang="ts">
 import { useRouter } from 'vue-router'
 import { useHolidaysStore } from '@/stores/holidays'
-import { onMounted, ref } from 'vue'
+import { computed, onMounted, ref } from 'vue'
 import type { holidayItem, holidayAttributes } from '@/types/holidayTypes'
+import { useZoomStore } from '@/stores/zoom'
+import { storeToRefs } from 'pinia'
+
+const { zoom } = storeToRefs(useZoomStore())
 
 const { holidays } = useHolidaysStore()
 const router = useRouter()
@@ -20,6 +24,17 @@ onMounted(() => {
     }))
   }
 })
+
+const currentAmoutRows = computed(() => {
+  if (zoom.value === 1) {
+    return 2;
+  } else if (zoom.value === 2) {
+    return 1;
+  } else if (zoom.value === 3) {
+    return 1;
+  }
+  return 2;
+});
 
 function handleDayClick(date: { id: string }) {
   const isActiveDate = holidays.find((holiday) => {
@@ -40,7 +55,7 @@ function handleDayClick(date: { id: string }) {
   <VCalendar
     transparent
     borderless
-    :rows="2"
+    :rows="currentAmoutRows"
     expanded
     :attributes="attributes"
     @dayclick="handleDayClick"

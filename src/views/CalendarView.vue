@@ -1,7 +1,20 @@
 <script setup lang="ts">
 import { RouterView, useRouter } from 'vue-router'
+import { useZoomStore } from '@/stores/zoom'
+import { storeToRefs } from 'pinia'
+
+const { zoom } = storeToRefs(useZoomStore())
+const { zoomIn, zoomOut } = useZoomStore()
 
 const router = useRouter()
+
+function handleZoomOut() {
+  zoomOut()
+}
+
+function handleZoomIn() {
+  zoomIn()
+}
 </script>
 
 <template>
@@ -11,12 +24,26 @@ const router = useRouter()
         <img src="/iconArrow.png" alt="Вернуться назад" />
       </button>
       <div class="calendar-view__scale-group">
-        <button class="calendar-view__scale-group__button">A</button>
-        <button class="calendar-view__scale-group__button">A</button>
+        <button
+          class="calendar-view__scale-group__button"
+          :disabled="zoom === 1"
+          @click="handleZoomOut"
+        >
+          A
+        </button>
+        <button
+          class="calendar-view__scale-group__button"
+          :disabled="zoom === 3"
+          @click="handleZoomIn"
+        >
+          A
+        </button>
       </div>
     </div>
 
-    <p class="calendar-view__title">Календарь<sup>{{ new Date().getFullYear() }}</sup></p>
+    <p class="calendar-view__title">
+      Календарь<sup>{{ new Date().getFullYear() }}</sup>
+    </p>
 
     <RouterView />
   </div>
@@ -58,7 +85,7 @@ const router = useRouter()
       color: rgb(223, 0, 0);
     }
 
-    sup{
+    sup {
       font-size: 1.5vh;
     }
   }
@@ -75,6 +102,11 @@ const router = useRouter()
       box-shadow: rgba(149, 157, 165, 0.2) 0px 8px 24px;
       touch-action: manipulation;
       user-select: none;
+
+      &:disabled {
+        background-color: rgb(232, 232, 232);
+        cursor: not-allowed;
+      }
 
       &:first-child {
         font-size: 1.5vh;
